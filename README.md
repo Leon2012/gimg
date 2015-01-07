@@ -44,6 +44,11 @@ Gimg是[zimg](https://github.com/buaazp/zimg)的golang版本。
 	./gimg --config=./conf/config.ini
 	
 	
+## 演示
+----------
+[http://182.92.189.64:8081/e351d9d8c9f409ec0ff4d518d6f7551f](http://182.92.189.64:8081/e351d9d8c9f409ec0ff4d518d6f7551f)
+
+	
 	
 	
 
