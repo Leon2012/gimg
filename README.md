@@ -1,7 +1,6 @@
 # Gimg
 
 ----------
-
 Gimg是[zimg](https://github.com/buaazp/zimg)的golang版本。
 
 完全兼容zimg的文件储存格式。
@@ -19,7 +18,6 @@ Gimg是[zimg](https://github.com/buaazp/zimg)的golang版本。
 # Install
 
 ----------
-
 ## Ubuntu/Debian
 
 ----------
@@ -37,7 +35,6 @@ Gimg是[zimg](https://github.com/buaazp/zimg)的golang版本。
 	
 ----------
 ## 安装
-
 ----------
 	go get github.com/gographics/imagick/imagick
 	go get code.google.com/p/gcfg
