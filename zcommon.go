@@ -42,11 +42,42 @@ type ZContext struct {
 	Logger *ZLogger
 	Cache  *ZCache
 	Image  *ZImage
+	Redis  *ZRedisDB
 }
 
-func NewContext(conf AppConfig, log *ZLogger, c *ZCache, i *ZImage) *ZContext {
-	return &ZContext{Config: conf,
+func NewContext(cfgFile string) (*ZContext, error) {
+	cfg, err := LoadConfig(cfgFile)
+	if err != nil {
+		return nil, err
+	}
+
+	//log, err := logger.NewFileLogger("zimg", 0, cfg.System.LogName)
+	log, err := NewLogger("gimg", 0)
+	if err != nil {
+		return nil, err
+	}
+
+	var cache *ZCache
+	if cfg.Cache.Cache == 1 {
+		// var client *memcache.Client
+		// cacheAddr := fmt.Sprintf("%s:%d", cfg.Cache.MemcacheHost, cfg.Cache.MemcachePort)
+		// client = memcache.New(cacheAddr)
+		cache = NewCache(cfg.Cache.MemcacheHost, cfg.Cache.MemcachePort)
+	} else {
+		cache = nil
+	}
+
+	img := NewImage()
+
+	redisDB, err := NewRedisDB(cfg.Storage.SsdbHost, cfg.Storage.SsdbPort)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ZContext{Config: cfg,
 		Logger: log,
-		Cache:  c,
-		Image:  i}
+		Cache:  cache,
+		Image:  img,
+		Redis:  redisDB,
+	}, nil
 }

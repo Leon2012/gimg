@@ -11,8 +11,7 @@ import (
 )
 
 type ZHttpd struct {
-	context *ZContext
-	//storage      *ZStorageFile
+	context      *ZContext
 	storage      ZStorage
 	writer       http.ResponseWriter
 	request      *http.Request

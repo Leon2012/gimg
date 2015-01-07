@@ -31,31 +31,10 @@ func main() {
 		os.Exit(-1)
 	}
 
-	/*===================加载配置文件========================*/
-	cfg, err := zimg.LoadConfig(cfgFile)
+	zContext, err := zimg.NewContext(cfgFile)
 	checkError(err)
+	defer zContext.Logger.Close()
 
-	/*===================加载log========================*/
-	//log, err := logger.NewFileLogger("zimg", 0, cfg.System.LogName)
-	log, err := zimg.NewLogger("zimg", 0)
-	checkError(err)
-	defer log.Close()
-
-	/*===================加载memcache cache========================*/
-	var cache *zimg.ZCache
-	if cfg.Cache.Cache == 1 {
-		// var client *memcache.Client
-		// cacheAddr := fmt.Sprintf("%s:%d", cfg.Cache.MemcacheHost, cfg.Cache.MemcachePort)
-		// client = memcache.New(cacheAddr)
-		cache = zimg.NewCache(cfg.Cache.MemcacheHost, cfg.Cache.MemcachePort)
-	} else {
-		cache = nil
-	}
-
-	/*===================加载image handler ========================*/
-	img := zimg.NewImage()
-
-	zContext = zimg.NewContext(cfg, log, cache, img)
 	//zContext.Logger.Info("load config.ini success!")
 
 	addr := fmt.Sprintf("%s:%d", zContext.Config.System.Host, zContext.Config.System.Port)
