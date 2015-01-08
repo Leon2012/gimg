@@ -3,7 +3,7 @@
 - - - 
 Gimg是[zimg](https://github.com/buaazp/zimg)的golang版本。
 
-完全兼容zimg的文件储存格式。
+完全兼容zimg的文件目录储存格式，支持文件和类Redis协议(SSDB)储存。
 
 环境要求：
 
@@ -36,6 +36,7 @@ Gimg是[zimg](https://github.com/buaazp/zimg)的golang版本。
 - - -
 	go get github.com/gographics/imagick/imagick
 	go get code.google.com/p/gcfg
+	go get github.com/garyburd/redigo/redis
 	go get github.com/Leon2012/gimg
 	cd $GOPATH/src/github.com/Leon2012/gimg/build/
 	go build -o gimg
