@@ -19,12 +19,25 @@ type ZHttpd struct {
 }
 
 func NewHttpd(c *ZContext) *ZHttpd {
-	var s ZStorage
-	if c.Config.Storage.Mode == 1 {
-		s = NewFileStorage(c)
-	}
+	return &ZHttpd{context: c,
+		storage:      genStorageHandler(c),
+		contentTypes: genContentTypes()}
+}
 
-	return &ZHttpd{context: c, storage: s, contentTypes: genContentTypes()}
+func genStorageHandler(c *ZContext) ZStorage {
+	var s ZStorage = nil
+	var i int = c.Config.Storage.Mode
+
+	switch i {
+	case 1:
+		s = NewFileStorage(c)
+	case 2:
+		break
+	case 3:
+		s = NewSSDBStorage(c)
+		break
+	}
+	return s
 }
 
 func genContentTypes() map[string]string {
@@ -275,6 +288,25 @@ func (z *ZHttpd) doGet(md5Sum string) {
 	if err != nil {
 		z.doError(err, 500)
 		return
+	}
+
+	//add etag support
+	if z.context.Config.System.Etag == 1 {
+		newMd5Sum := gen_md5_str(data)
+
+		ifNoneMatch := z.request.Header.Get("If-None-Match")
+		if len(ifNoneMatch) == 0 {
+			z.writer.Header().Set("Etag", newMd5Sum)
+		} else {
+			if ifNoneMatch == newMd5Sum {
+				z.context.Logger.Debug("Etag Matched Return 304 EVHTP_RES_NOTMOD.")
+				z.doError(fmt.Errorf("Not Modified"), http.StatusNotModified)
+				return
+			} else {
+				z.writer.Header().Set("Etag", newMd5Sum)
+			}
+		}
+
 	}
 
 	headers := z.context.Config.System.Headers

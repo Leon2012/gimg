@@ -37,7 +37,7 @@ func NewRedisDB(s string, p int) (*ZRedisDB, error) {
 		server:    s,
 		port:      p,
 		pool:      pool,
-		isConnect: false,
+		isConnect: true,
 	}, nil
 }
 
@@ -52,30 +52,48 @@ func (z *ZRedisDB) getConnect() (redis.Conn, error) {
 
 func (z *ZRedisDB) Exist(key string) bool {
 	conn, err := z.getConnect()
-	defer conn.Close()
 	if err != nil {
 		return false
 	}
+	defer conn.Close()
 
 	isExists, _ := redis.Bool(conn.Do("EXISTS", key))
 	return isExists
 }
 
-func (z *ZRedisDB) Do(commandName string, args ...interface{}) (interface{}, error) {
+func (z *ZRedisDB) Get(key string) ([]byte, error) {
 	conn, err := z.getConnect()
-	defer conn.Close()
 	if err != nil {
 		return nil, errors.New("Can not connect db!")
 	}
+	defer conn.Close()
+
+	data, err := redis.Bytes(conn.Do("GET", key))
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
+func (z *ZRedisDB) Do(commandName string, args ...interface{}) (interface{}, error) {
+	conn, err := z.getConnect()
+
+	if err != nil {
+		return nil, errors.New("Can not connect db!")
+	}
+	defer conn.Close()
+
 	return conn.Do(commandName, args...)
 }
 
 func (z *ZRedisDB) Send(commandName string, args ...interface{}) error {
 	conn, err := z.getConnect()
-	defer conn.Close()
+
 	if err != nil {
 		return errors.New("Can not connect db!")
 	}
+	defer conn.Close()
+
 	return conn.Send(commandName, args...)
 }
 

@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	PROJECT_VERSION = "1.0"
+	PROJECT_VERSION = "1.0.1"
 	MAX_LINE        = 1024
 	CACHE_KEY_SIZE  = 128
 	RETRY_TIME_WAIT = 1000
