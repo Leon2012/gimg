@@ -33,7 +33,7 @@ func main() {
 
 	zContext, err := zimg.NewContext(cfgFile)
 	checkError(err)
-	defer zContext.Logger.Close()
+	defer zContext.Release()
 
 	//zContext.Logger.Info("load config.ini success!")
 

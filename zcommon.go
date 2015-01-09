@@ -3,6 +3,7 @@ package gimg
 import (
 	_ "encoding/json"
 	_ "fmt"
+	"github.com/gographics/imagick/imagick"
 )
 
 const (
@@ -46,6 +47,8 @@ type ZContext struct {
 }
 
 func NewContext(cfgFile string) (*ZContext, error) {
+	imagick.Initialize()
+
 	cfg, err := LoadConfig(cfgFile)
 	if err != nil {
 		return nil, err
@@ -80,4 +83,9 @@ func NewContext(cfgFile string) (*ZContext, error) {
 		Image:  img,
 		Redis:  redisDB,
 	}, nil
+}
+
+func (z *ZContext) Release() {
+	z.Logger.Close()
+	imagick.Terminate()
 }

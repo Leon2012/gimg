@@ -98,8 +98,6 @@ func (z *ZFileStorage) GetImage(request *ZRequest) ([]byte, error) {
 	result = nil
 	data = nil
 	toSave := true
-	imagick.Initialize()
-	defer imagick.Terminate()
 	mw := imagick.NewMagickWand()
 	defer mw.Destroy()
 
@@ -314,8 +312,6 @@ func (z *ZFileStorage) InfoImage(md5 string) (*ZImageInfo, error) {
 	result = nil
 	z.context.Logger.Info("info_img() start processing info request...")
 
-	imagick.Initialize()
-	defer imagick.Terminate()
 	mw := imagick.NewMagickWand()
 	defer mw.Destroy()
 

@@ -41,8 +41,6 @@ func (z *ZSSDBStorage) GetImage(request *ZRequest) ([]byte, error) {
 	var rspCachekey string
 	toSave := true
 
-	imagick.Initialize()
-	defer imagick.Terminate()
 	mw := imagick.NewMagickWand()
 	defer mw.Destroy()
 
@@ -142,8 +140,6 @@ func (z *ZSSDBStorage) InfoImage(md5 string) (*ZImageInfo, error) {
 	result = nil
 	z.context.Logger.Info("info_img() start processing info request...")
 
-	imagick.Initialize()
-	defer imagick.Terminate()
 	mw := imagick.NewMagickWand()
 	defer mw.Destroy()
 
