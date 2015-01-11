@@ -7,6 +7,7 @@ import (
 	_ "github.com/bradfitz/gomemcache/memcache"
 	"net/http"
 	"os"
+	"runtime"
 	// "os/signal"
 	// "syscall"
 )
@@ -15,6 +16,8 @@ var cfgFile string
 var zContext *zimg.ZContext
 
 func main() {
+	runtime.GOMAXPROCS(runtime.NumCPU())
+
 	configPtr := flag.String("config", "", "config file")
 	flag.Usage = usage
 	flag.Parse()

@@ -13,6 +13,7 @@ type AppConfig struct {
 		Port        int
 		Headers     string
 		Etag        int
+		LogOutput   string
 		LogLevel    int
 		LogName     string
 		DisableArgs int

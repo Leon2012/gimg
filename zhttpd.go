@@ -1,6 +1,7 @@
 package gimg
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -8,6 +9,8 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	//"time"
+	"io"
 )
 
 type ZHttpd struct {
@@ -147,6 +150,7 @@ func (z *ZHttpd) doUpload() {
 		z.doError(err, 500)
 		return
 	}
+	defer file.Close()
 
 	data, err := ioutil.ReadAll(file)
 	if err != nil {
@@ -319,12 +323,14 @@ func (z *ZHttpd) doGet(md5Sum string) {
 		}
 	}
 
-	//etag := z.context.Config.System.Etag
-
 	imageFormat := strings.ToLower(f)
 	if contentType, ok := z.contentTypes[imageFormat]; ok {
 		z.writer.Header().Set("Content-Type", contentType)
-		z.writer.Write(data)
+		z.writer.Header().Set("Accept-Ranges", "bytes")
+		if z.writer.Header().Get("Content-Encoding") == "" {
+			z.writer.Header().Set("Content-Length", strconv.Itoa(len(data)))
+		}
+		io.Copy(z.writer, bytes.NewReader(data))
 
 	} else {
 		err = fmt.Errorf("can not found content type!!!")

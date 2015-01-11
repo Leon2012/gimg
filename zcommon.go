@@ -2,7 +2,7 @@ package gimg
 
 import (
 	_ "encoding/json"
-	_ "fmt"
+	"fmt"
 	"github.com/gographics/imagick/imagick"
 )
 
@@ -54,8 +54,16 @@ func NewContext(cfgFile string) (*ZContext, error) {
 		return nil, err
 	}
 
-	//log, err := logger.NewFileLogger("zimg", 0, cfg.System.LogName)
-	log, err := NewLogger("gimg", 0)
+	var log *ZLogger
+	logOutput := cfg.System.LogOutput
+	if logOutput == "file" {
+		log, err = NewFileLogger("gimg", 0, cfg.System.LogName)
+	} else if logOutput == "console" {
+		log, err = NewLogger("gimg", 0)
+	} else {
+		return nil, fmt.Errorf("init logger faile.")
+	}
+
 	if err != nil {
 		return nil, err
 	}
