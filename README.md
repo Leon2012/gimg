@@ -1,6 +1,6 @@
 # Gimg
 
-- - - 
+- - -
 Gimg是[zimg](https://github.com/buaazp/zimg)的golang版本。
 
 完全兼容zimg的文件目录储存格式，支持文件和类Redis协议(SSDB)储存。
