@@ -15,10 +15,10 @@ Gimg是[zimg](https://github.com/buaazp/zimg)的golang版本。
 
 # Install
 
-***
+- - -
 ## Ubuntu/Debian
 
-- - - 
+- - -
 	wget http://www.magickwand.org/download/releases/ImageMagick-6.8.5-10.tar.gz
 	tar zxvf ImageMagick-6.8.5-10.tar.gz
 	cd ImageMagick-6.8.5-10/
