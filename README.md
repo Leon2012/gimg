@@ -15,7 +15,7 @@ Gimg是[zimg](https://github.com/buaazp/zimg)的golang版本。
 
 # Install
 
-- - -
+***
 ## Ubuntu/Debian
 
 - - - 
